@@ -1,0 +1,256 @@
+<html>
+<head>
+    <script type="text/javascript" src="data.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div id="header">
+    <h1>Blog Posts</h1></div>
+
+<div id="mainContent">
+    <!-- laat hier de html voor de posting komen -->
+</div>
+
+<script>
+    function generateSingleBlogPost(blogPost) {
+        var mainDiv = document.getElementById("mainContent");
+
+        var blogDiv = document.createElement("div");
+        blogDiv.id=blogPost.title;
+        mainDiv.appendChild(blogDiv);
+
+        var title = document.createElement("h1");
+        title.innerHTML = blogPost.title;
+        blogDiv.appendChild(title);
+
+        var author = document.createElement("h4");
+        author.innerHTML = "Author: " + blogPost.author;
+        blogDiv.appendChild(author);
+
+        if(blogPost.image) {
+            var image = document.createElement("img");
+            image.src = blogPost.image;
+            blogDiv.appendChild(image);
+        }
+
+        var body = document.createElement("p");
+        body.innerHTML = blogPost.bodyText;
+        blogDiv.appendChild(body);
+
+        var newLine = document.createElement("br");
+        blogDiv.appendChild(newLine);
+
+        var link = document.createElement("a");
+        link.href = blogPost.link;
+        link.target = "_blank";
+        link.innerHTML = "Read More...";
+        blogDiv.appendChild(link);
+
+        var ranking = document.createElement("h4");
+        ranking.innerHTML = "Ranking: " + blogPost.ranking;
+        blogDiv.appendChild(ranking);
+
+        var commentDiv = document.createElement("div");
+        commentDiv.className = "comments";
+        blogDiv.appendChild(commentDiv);
+
+        var commentTitle = document.createElement("h2");
+        commentTitle.innerHTML = "Comments:";
+        commentDiv.appendChild(commentTitle);
+
+        if(blogPost.comments) {
+            for(var i=0; i<blogPost.comments.length; i++) {
+                commentDiv.appendChild(blogPost.comments[i].showComment());
+            }
+        } else {
+            var noComments = document.createElement("p");
+            noComments.innerHTML = "No comments";
+            commentDiv.appendChild(noComments);
+        }
+    }
+
+    function ratingResult(object) {
+        if (object.ranking < 3) {
+            return null;
+        } else if (object.ranking >= 3) {
+            if (object.ranking == 5) {
+                return "<b>" + object.title + "</b>";
+            } else {
+                return object.title;
+            }
+        }
+    }
+
+    function generateTopPosts(blogPost, id) {
+        var mainDiv = document.getElementById("mainContent");
+        if(id == 0){
+            var topPosts = document.createElement("div");
+            topPosts.id = "topPosts";
+            mainDiv.appendChild(topPosts);
+            var topPostsHeader = document.createElement("h2");
+            topPostsHeader.innerHTML = "Top Posts";
+            topPosts.appendChild(topPostsHeader);
+        }
+        var topDiv = document.getElementById("topPosts");
+        var title = document.createElement("p");
+        title.innerHTML = blogPost.returnRating();
+        title.onclick = function(){
+            window.location.href =  "#" + blogPost.title;
+        };
+        topDiv.appendChild(title);
+    }
+
+    function generateComment(comment) {
+        var name = document.createElement("h4");
+        name.innerHTML = comment.name;
+        var text = document.createElement("p");
+        text.innerHTML = comment.text;
+        var ranking = document.createElement("h5");
+        ranking.innerHTML = "Ranking: " + comment.ranking;
+        var commentDiv = document.createElement("div");
+        commentDiv.className = "comment";
+        commentDiv.appendChild(name);
+        commentDiv.appendChild(text);
+        commentDiv.appendChild(ranking);
+        return commentDiv;
+    }
+
+    function generateSponsoredBlogPost(blogPost) {
+        var mainDiv = document.getElementById("mainContent");
+
+        var blogDiv = document.createElement("div");
+        blogDiv.id=blogPost.title;
+        blogDiv.className = "sponsoredPost";
+        mainDiv.appendChild(blogDiv);
+
+        var sponsoredMessage = document.createElement("p");
+        sponsoredMessage.innerHTML = "this is a message from one of our sponsors";
+        blogDiv.appendChild(sponsoredMessage);
+
+        var title = document.createElement("h1");
+        title.innerHTML = blogPost.title;
+        title.onclick = function() {
+            window.open(blogPost.sponsorURL);
+        };
+        blogDiv.appendChild(title);
+
+        var author = document.createElement("h4");
+        author.innerHTML = "Author: " + blogPost.author;
+        blogDiv.appendChild(author);
+
+        if(blogPost.image) {
+            var image = document.createElement("img");
+            image.src = blogPost.image;
+            blogDiv.appendChild(image);
+        }
+
+        var body = document.createElement("p");
+        body.innerHTML = blogPost.bodyText;
+        blogDiv.appendChild(body);
+
+        var newLine = document.createElement("br");
+        blogDiv.appendChild(newLine);
+
+        var link = document.createElement("a");
+        link.href = blogPost.link;
+        link.target = "_blank";
+        link.innerHTML = "Read More...";
+        blogDiv.appendChild(link);
+
+        var ranking = document.createElement("h4");
+        ranking.innerHTML = "Ranking: " + blogPost.ranking;
+        blogDiv.appendChild(ranking);
+
+        var commentDiv = document.createElement("div");
+        commentDiv.className = "comments";
+        blogDiv.appendChild(commentDiv);
+
+        var commentTitle = document.createElement("h2");
+        commentTitle.innerHTML = "Comments:";
+        commentDiv.appendChild(commentTitle);
+
+        if(blogPost.comments) {
+            for(var i=0; i<blogPost.comments.length; i++) {
+                commentDiv.appendChild(blogPost.comments[i].showComment());
+            }
+        } else {
+            var noComments = document.createElement("p");
+            noComments.innerHTML = "No comments";
+            commentDiv.appendChild(noComments);
+        }
+    }
+
+    function generateVideoBlogPost(blogPost) {
+        var mainDiv = document.getElementById("mainContent");
+
+        var blogDiv = document.createElement("div");
+        blogDiv.id=blogPost.title;
+        mainDiv.appendChild(blogDiv);
+
+        var title = document.createElement("h1");
+        title.innerHTML = blogPost.title;
+        title.onclick = function() {
+            window.open(blogPost.sponsorURL);
+        };
+        blogDiv.appendChild(title);
+
+        var author = document.createElement("h4");
+        author.innerHTML = "Author: " + blogPost.author;
+        blogDiv.appendChild(author);
+
+        var body = document.createElement("p");
+        body.innerHTML = blogPost.bodyText;
+        blogDiv.appendChild(body);
+
+        if(blogPost.video) {
+            var video = document.createElement("iframe");
+            video.src = blogPost.video;
+            video.frameBorder="0";
+            video.width = 420;
+            video.height = 315;
+            video.setAttribute('allowFullScreen', '')
+            blogDiv.appendChild(video);
+        }
+
+        var newLine = document.createElement("br");
+        blogDiv.appendChild(newLine);
+
+        var link = document.createElement("a");
+        link.href = blogPost.link;
+        link.target = "_blank";
+        link.innerHTML = "Read More...";
+        blogDiv.appendChild(link);
+
+        var ranking = document.createElement("h4");
+        ranking.innerHTML = "Ranking: " + blogPost.ranking;
+        blogDiv.appendChild(ranking);
+
+        var commentDiv = document.createElement("div");
+        commentDiv.className = "comments";
+        blogDiv.appendChild(commentDiv);
+
+        var commentTitle = document.createElement("h2");
+        commentTitle.innerHTML = "Comments:";
+        commentDiv.appendChild(commentTitle);
+
+        if(blogPost.comments) {
+            for(var i=0; i<blogPost.comments.length; i++) {
+                commentDiv.appendChild(blogPost.comments[i].showComment());
+            }
+        } else {
+            var noComments = document.createElement("p");
+            noComments.innerHTML = "No comments";
+            commentDiv.appendChild(noComments);
+        }
+    }
+
+    for(var i=0; i<allBlogPosts.length; i++) {
+        if(allBlogPosts[i].returnRating()) {
+            generateTopPosts(allBlogPosts[i], i);
+        }
+        allBlogPosts[i].generate();
+    }
+</script>
+</body>
+</html>
